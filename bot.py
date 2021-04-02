@@ -8,17 +8,17 @@ from time import sleep, strftime
 from requests import get, post
 
 
-def buy_slave(id):
-    """Покупает раба."""
+def get_bonus():
+    """Получает бонус."""
     post(
-        "https://slaves-mini-app.xyz/api/slaves/buySlave",
+        "https://slaves-mini-app.xyz/api/bonuses/earn",
         headers={
             "Content-Type": "application/json",
             "authorization": auth,
             "User-agent": user_agent,
             "origin": origin,
         },
-        json={"slave_id": id},
+        json={"type": "bonus:rewarded_ad"},
     )
 
 
@@ -37,7 +37,7 @@ def get_buy_slave(id):
 
 
 def get_user(id):
-    """Получает информацие о пользователе."""
+    """Возвращает информацию о пользователе."""
     return get(
         f"https://slaves-mini-app.xyz/api/slaves/user/{id}",
         headers={
@@ -91,6 +91,7 @@ def buy_top_users_slaves():
                                 slave_info["price"] <= max_price
                                 and slave_info["price"] >= min_price
                             ):
+                                get_bonus()
                                 # Покупка раба
                                 buy_slave_info = get_buy_slave(slave_id)
 
@@ -98,7 +99,7 @@ def buy_top_users_slaves():
                                     profile = buy_slave_info["user"]
                                     print(
                                         f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
-Купил id{slave_info['vk_user_id']} за {slave_info['price']} у id{top_user['vk_user_id']}
+Купил id{slave_id} за {slave_info['price']} у id{top_user['vk_user_id']}
 Баланс: {"{:,}".format(profile['balance']['coins'])}
 Рабов: {"{:,}".format(profile['slaves_count'])}
 Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n"""
@@ -112,6 +113,7 @@ def buy_top_users_slaves():
 def buy_slaves():
     """Покупает и улучшает рабов, надевает оковы, если включено в config.json."""
     try:
+        get_bonus()
         # Случайный раб в промежутке
         slave_id = randint(1, 647360748)
         slave_info = get_user(slave_id)
@@ -130,7 +132,7 @@ def buy_slaves():
             profile = buy_slave_info["user"]
             print(
                 f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
-Купил id{slave_info['vk_user_id']} за {slave_info['price']}
+Купил id{slave_id} за {slave_info['price']}
 Баланс: {"{:,}".format(profile['balance']['coins'])}
 Рабов: {"{:,}".format(profile['slaves_count'])}
 Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n""",
@@ -155,6 +157,7 @@ def buy_from_ids():
                             slave_info["price"] <= max_price
                             and slave_info["price"] >= min_price
                         ):
+                            get_bonus()
                             # Покупка раба
                             buy_slave_info = get_buy_slave(slave_id)
 
@@ -162,7 +165,7 @@ def buy_from_ids():
                                 profile = buy_slave_info["user"]
                                 print(
                                     f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
-Купил id{slave_info['vk_user_id']} за {slave_info['price']} у id{id}
+Купил id{slave_id} за {slave_info['price']} у id{id}
 Баланс: {"{:,}".format(profile['balance']['coins'])}
 Рабов: {"{:,}".format(profile['slaves_count'])}
 Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n""",
@@ -177,7 +180,7 @@ if __name__ == "__main__":
     print(
         """vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 1.1""",
+Версия 1.2""",
     )
 
     # Конфиг
