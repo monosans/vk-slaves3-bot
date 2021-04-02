@@ -75,6 +75,17 @@ def get_top_users():
     ).json()
 
 
+def get_bonuses():
+    while True:
+        try:
+            get_bonus()
+            print("Бонус получен.")
+            sleep(60 + uniform(0, 5))
+        except Exception as e:
+            print(e.args)
+            sleep(uniform(0, 5))
+
+
 def buy_top_users_slaves():
     """То же самое, что и buy_slaves, только перекупает рабов у топ игроков."""
     try:
@@ -180,7 +191,7 @@ if __name__ == "__main__":
     print(
         """vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 1.2""",
+Версия 1.3""",
     )
 
     # Конфиг
@@ -213,3 +224,6 @@ github.com/monosans/vk-slaves3-bot
         print("Включена перекупка у IDшников из config.json.")
         while True:
             buy_from_ids()
+    elif buy_slaves_mode == 0:
+        print("Включено получение бонуса.")
+        get_bonuses()
