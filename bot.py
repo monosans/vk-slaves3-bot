@@ -94,7 +94,7 @@ def buy_top_users_slaves():
                                 # Покупка раба
                                 buy_slave_info = get_buy_slave(slave_id)
 
-                                if "user" in profile.keys():
+                                if "user" in buy_slave_info.keys():
                                     profile = buy_slave_info["user"]
                                     print(
                                         f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
@@ -126,7 +126,7 @@ def buy_slaves():
         # Покупка раба
         buy_slave_info = get_buy_slave(slave_id)
 
-        if "user" in profile.keys():
+        if "user" in buy_slave_info.keys():
             profile = buy_slave_info["user"]
             print(
                 f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
@@ -158,7 +158,7 @@ def buy_from_ids():
                             # Покупка раба
                             buy_slave_info = get_buy_slave(slave_id)
 
-                            if "user" in profile.keys():
+                            if "user" in buy_slave_info.keys():
                                 profile = buy_slave_info["user"]
                                 print(
                                     f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     print(
         """vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 1.0""",
+Версия 1.1""",
     )
 
     # Конфиг
