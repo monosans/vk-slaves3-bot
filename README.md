@@ -46,8 +46,19 @@
   - cd
   - pkg install -y git python
   - git clone https://github.com/monosans/vk-slaves3-bot
-- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json` по инструкции для Windows. Для удобства редактирования можете скачать Hacker's Keyboard в Google Play, в ней в горизонтальном положении есть стрелочки для управления курсором. Чтобы получить `authorization` с телефона, можно использовать [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12).
-- Когда файл отредактирован, для сохранения нажмите Ctrl-O, Enter, Ctrl-X.
+- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json` по инструкции для Windows. Для удобства редактирования можно скачать Hacker's Keyboard в Google Play, в ней в горизонтальном положении есть стрелочки для управления курсором. Чтобы получить authorization с телефона, используем приложение [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12):
+  - authorization:
+    - Открываем приложение F12, заходим на [сайт мобильного ВКонтакте](https://m.vk.com) и авторизуемся.
+    - Открываем ["ВРабстве 3.0"](https://m.vk.com/app7790408) через тот же F12.
+    - Нажимаем кнопку F12, переходим на вкладку `Network` (3-я по счёту)
+    - Ставим галочку около `Advance`
+    - Сворачиваем панель и нажимаем на стрелочку для перезагрузки страницы
+    - Внови нажимаем кнопку F12, переходим на вкладку `Network`
+    - Немного листаеем вверх и находим запись `https://slaves-mini-app.xyz/api/user/me`, нажимаем по ней
+    - Появится ещё одна панель, под записью Request Headers находим поле `authorization`
+    - Копируем его значение (начинается c **Bearer**, **Bearer** копировать тоже нужно, заканчивается при переходе на строку **User-Agent**)
+    - Вставляем скопированный текст в значение `authorization` в `config.json` между кавычками
+- После редактирования файла, для сохранения нажмите Ctrl-O, Enter, Ctrl-X.
 
 Запуск: `sh vk-slaves3-bot/launch.sh`
 
