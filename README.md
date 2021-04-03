@@ -46,7 +46,8 @@
   - cd
   - pkg install -y git python
   - git clone https://github.com/monosans/vk-slaves3-bot
-- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json` по инструкции для Windows. Для удобства редактирования можно скачать Hacker's Keyboard в Google Play, в ней в горизонтальном положении есть стрелочки для управления курсором. Чтобы получить authorization с телефона, используем приложение [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12):
+- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json` по инструкции для Windows. Для удобного редактирования скачиваем [приложение Hacker's Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard), в ней в горизонтальном положении есть стрелочки для управления курсором. 
+- Чтобы получить `authorization` с телефона, используем [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12):
   - authorization:
     - Открываем приложение F12, заходим на [сайт мобильного ВКонтакте](https://m.vk.com) и авторизуемся.
     - Открываем ["ВРабстве 3.0"](https://m.vk.com/app7790408) через тот же F12.
