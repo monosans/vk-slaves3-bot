@@ -40,13 +40,13 @@
 
 ## Установка на Termux (Android)
 
-- Устанавливаем Termux, желательно с [F-Droid](https://f-droid.org/repo/com.termux_108.apk), т.к. в Google Play разработчик его больше не обновляет.
+- Устанавливаем приложение [Termux с F-Droid](https://f-droid.org/repo/com.termux_108.apk), т.к. в Google Play разработчик его больше не обновляет.
 - Запускаем Termux.
 - Пишем по порядку:
   - cd
   - pkg install -y git python
   - git clone https://github.com/monosans/vk-slaves3-bot
-- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json` по инструкции для Windows. Для удобного редактирования скачиваем [приложение Hacker's Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard), в ней в горизонтальном положении есть стрелочки для управления курсором. 
+- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json`. Для удобного редактирования можно скачать [приложение Hacker's Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard), в нём в горизонтальном положении есть стрелочки для управления курсором.
 - Чтобы получить `authorization` с телефона, используем [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12):
   - authorization:
     - Открываем приложение F12, заходим на [сайт мобильного ВКонтакте](https://m.vk.com) и авторизуемся.
