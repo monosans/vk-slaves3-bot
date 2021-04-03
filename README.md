@@ -1,6 +1,6 @@
 ## **vk-slaves3-bot - бот для игры ["ВРабстве 3.0"](https://vk.com/app7790408) ВКонтакте.**
 
-[Группа ВКонтакте](https://vk.com/club203543653), в ней публикуются новости и другая полезная информация. У группы есть беседа, в которой можно задавать вопросы.
+Наша [группа ВКонтакте](https://vk.com/club203543653), в ней публикуются новости и другая полезная информация, также через группу есть возможность войти в беседу.
 
 **Лучшая благодарность - звёздочка на GitHub и "спасибо" в [ЛС в ВК](https://vk.com/id607137534).**
 
@@ -40,14 +40,26 @@
 
 ## Установка на Termux (Android)
 
-- Устанавливаем Termux, желательно с [F-Droid](https://f-droid.org/repo/com.termux_108.apk), т.к. в Google Play разработчик его больше не обновляет.
+- Устанавливаем [Termux с F-Droid](https://f-droid.org/repo/com.termux_108.apk), т.к. в Google Play разработчик его больше не обновляет.
 - Запускаем Termux.
 - Пишем по порядку:
   - cd
   - pkg install -y git python
   - git clone https://github.com/monosans/vk-slaves3-bot
-- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json` по инструкции для Windows. Для удобства редактирования можете скачать Hacker's Keyboard в Google Play, в ней в горизонтальном положении есть стрелочки для управления курсором. Чтобы получить `authorization` с телефона, можно использовать [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12).
-- Когда файл отредактирован, для сохранения нажмите Ctrl-O, Enter, Ctrl-X.
+- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json`. Для удобного редактирования можно скачать [приложение Hacker's Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard), в нём в горизонтальном положении есть стрелочки для управления курсором.
+- Чтобы получить `authorization` с телефона, используем [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12):
+  - authorization:
+    - Открываем приложение F12, заходим на [сайт мобильного ВКонтакте](https://m.vk.com) и авторизуемся.
+    - Открываем ["ВРабстве 3.0"](https://m.vk.com/app7790408) через тот же F12.
+    - Нажимаем кнопку F12, переходим на вкладку `Network` (3-я по счёту).
+    - Ставим галочку около `Advance`.
+    - Сворачиваем панель и нажимаем на стрелочку для перезагрузки страницы.
+    - Внови нажимаем кнопку F12, переходим на вкладку `Network`.
+    - Немного листаем вверх и находим запись `https://slaves-mini-app.xyz/api/user/me`, нажимаем по ней.
+    - Появится ещё одна панель, под записью Request Headers находим поле `authorization`.
+    - Копируем его значение (начинается c **Bearer**, **Bearer** копировать тоже нужно, заканчивается при переходе на строку **User-Agent**).
+    - Вставляем скопированный текст в значение `authorization` в `config.json` между кавычками.
+- После редактирования файла, для сохранения нажмите Ctrl-O, Enter, Ctrl-X.
 
 Запуск: `sh vk-slaves3-bot/launch.sh`
 
