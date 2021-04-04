@@ -5,14 +5,15 @@ from json import load
 from random import randint, uniform
 from time import sleep, strftime
 
-from requests import get, post
+import cfscrape 
 
-
+scraper = cfscrape.create_scraper()
 def get_bonus():
     """Получает бонус."""
-    post(
-        "https://slaves-mini-app.xyz/api/bonuses/earn",
+    scraper.post(
+        "https://slave.su/api/bonuses/earn",
         headers={
+            "cookie":cookie,
             "Content-Type": "application/json",
             "authorization": auth,
             "User-agent": user_agent,
@@ -24,9 +25,10 @@ def get_bonus():
 
 def get_buy_slave(id):
     """Покупает раба."""
-    return post(
-        "https://slaves-mini-app.xyz/api/slaves/buySlave",
+    return scraper.post(
+        "https://slave.su/api/slaves/buySlave",
         headers={
+            "cookie":cookie,
             "Content-Type": "application/json",
             "authorization": auth,
             "User-agent": user_agent,
@@ -38,9 +40,10 @@ def get_buy_slave(id):
 
 def get_user(id):
     """Возвращает информацию о пользователе."""
-    return get(
-        f"https://slaves-mini-app.xyz/api/slaves/user/{id}",
+    return scraper.get(
+        f"https://slave.su/api/slaves/user/{id}",
         headers={
+            "cookie":cookie,
             "Content-Type": "application/json",
             "authorization": auth,
             "User-agent": user_agent,
@@ -51,9 +54,10 @@ def get_user(id):
 
 def get_slave_list(id):
     """Возвращает список рабов пользователя."""
-    return get(
-        f"https://slaves-mini-app.xyz/api/slaves/slaveList/{id}",
+    return scraper.get(
+        f"https://slave.su/api/slaves/slaveList/{id}",
         headers={
+            "cookie":cookie,
             "Content-Type": "application/json",
             "authorization": auth,
             "User-agent": user_agent,
@@ -64,9 +68,10 @@ def get_slave_list(id):
 
 def get_top_users():
     """Возвращает список топ игроков."""
-    return get(
-        "https://slaves-mini-app.xyz/api/slaves/topUsers",
+    return scraper.get(
+        "https://slave.su/api/slaves/topUsers",
         headers={
+            "cookie":cookie,
             "Content-Type": "application/json",
             "authorization": auth,
             "User-agent": user_agent,
@@ -208,10 +213,10 @@ github.com/monosans/vk-slaves3-bot
     min_price = int(config["min_price"])
     max_price = int(config["max_price"])
     buy_from_ids_list = list(config["buy_from_ids"])
-    user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Safari/537.36"
-    origin = "https://slaves-mini-app.xyz"
+    origin = "https://slave.su"
+    cookie,user_agent = cfscrape.get_cookie_string("https://slave.su/api/slaves/buySlave")
 
-    # Запуск
+    #Запуск
     if buy_slaves_mode == 1:
         print("Включена покупка случайных рабов.")
         while True:
