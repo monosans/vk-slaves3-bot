@@ -2,76 +2,51 @@
 # -*- coding: utf-8 -*-
 import sys
 from json import load
-from random import randint, uniform
+from random import uniform
 from time import sleep, strftime
 
-from requests import get, post
+import cloudscraper
 
 
 def get_bonus():
     """Получает бонус."""
-    post(
-        "https://slaves-mini-app.xyz/api/bonuses/earn",
-        headers={
-            "Content-Type": "application/json",
-            "authorization": auth,
-            "User-agent": user_agent,
-            "origin": origin,
-        },
+    scraper.post(
+        "https://slave.su/api/bonuses/earn",
+        headers=headers,
         json={"type": "bonus:rewarded_ad"},
     )
 
 
 def get_buy_slave(id):
     """Покупает раба."""
-    return post(
-        "https://slaves-mini-app.xyz/api/slaves/buySlave",
-        headers={
-            "Content-Type": "application/json",
-            "authorization": auth,
-            "User-agent": user_agent,
-            "origin": origin,
-        },
+    return scraper.post(
+        "https://slave.su/api/slaves/buySlave",
+        headers=headers,
         json={"slave_id": id},
     ).json()
 
 
 def get_user(id):
     """Возвращает информацию о пользователе."""
-    return get(
-        f"https://slaves-mini-app.xyz/api/slaves/user/{id}",
-        headers={
-            "Content-Type": "application/json",
-            "authorization": auth,
-            "User-agent": user_agent,
-            "origin": origin,
-        },
+    return scraper.get(
+        f"https://slave.su/api/slaves/user/{id}",
+        headers=headers,
     ).json()
 
 
 def get_slave_list(id):
     """Возвращает список рабов пользователя."""
-    return get(
-        f"https://slaves-mini-app.xyz/api/slaves/slaveList/{id}",
-        headers={
-            "Content-Type": "application/json",
-            "authorization": auth,
-            "User-agent": user_agent,
-            "origin": origin,
-        },
+    return scraper.get(
+        f"https://slave.su/api/slaves/slaveList/{id}",
+        headers=headers,
     ).json()
 
 
 def get_top_users():
     """Возвращает список топ игроков."""
-    return get(
-        "https://slaves-mini-app.xyz/api/slaves/topUsers",
-        headers={
-            "Content-Type": "application/json",
-            "authorization": auth,
-            "User-agent": user_agent,
-            "origin": origin,
-        },
+    return scraper.get(
+        "https://slave.su/api/slaves/topUsers",
+        headers=headers,
     ).json()
 
 
@@ -113,42 +88,9 @@ def buy_top_users_slaves():
 Купил id{slave_id} за {slave_info['price']} у id{top_user['vk_user_id']}
 Баланс: {"{:,}".format(profile['balance']['coins'])}
 Рабов: {"{:,}".format(profile['slaves_count'])}
-Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n"""
+Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n""",
                                     )
                                     sleep(uniform(min_delay, max_delay))
-    except Exception as e:
-        print(e.args)
-        sleep(uniform(min_delay, max_delay))
-
-
-def buy_slaves():
-    """Покупает и улучшает рабов, надевает оковы, если включено в config.json."""
-    try:
-        get_bonus()
-        # Случайный раб в промежутке
-        slave_id = randint(1, 647360748)
-        slave_info = get_user(slave_id)
-
-        # Проверка раба на соотвествие настройкам цены
-        while (
-            slave_info["price"] > max_price or slave_info["price"] < min_price
-        ):
-            slave_id = randint(1, 647360748)
-            slave_info = get_user(slave_id)
-
-        # Покупка раба
-        buy_slave_info = get_buy_slave(slave_id)
-
-        if "user" in buy_slave_info.keys():
-            profile = buy_slave_info["user"]
-            print(
-                f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
-Купил id{slave_id} за {slave_info['price']}
-Баланс: {"{:,}".format(profile['balance']['coins'])}
-Рабов: {"{:,}".format(profile['slaves_count'])}
-Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n""",
-            )
-            sleep(uniform(min_delay, max_delay))
     except Exception as e:
         print(e.args)
         sleep(uniform(min_delay, max_delay))
@@ -189,9 +131,10 @@ def buy_from_ids():
 
 if __name__ == "__main__":
     print(
-        """vk.com/free_slaves_bot
+        """ВРабстве 3.0
+vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 1.3""",
+Версия 20210406""",
     )
 
     # Конфиг
@@ -208,19 +151,20 @@ github.com/monosans/vk-slaves3-bot
     min_price = int(config["min_price"])
     max_price = int(config["max_price"])
     buy_from_ids_list = list(config["buy_from_ids"])
-    user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Safari/537.36"
-    origin = "https://slaves-mini-app.xyz"
+    headers = {
+        "Content-Type": "application/json",
+        "authorization": auth,
+        "origin": "https://stage-app7790408-d3d98043d3c2.pages.vk-apps.com",
+        "referer": "https://stage-app7790408-d3d98043d3c2.pages.vk-apps.com/",
+    }
+    scraper = cloudscraper.create_scraper()
 
     # Запуск
     if buy_slaves_mode == 1:
-        print("Включена покупка случайных рабов.")
-        while True:
-            buy_slaves()
-    elif buy_slaves_mode == 2:
         print("Включена перекупка рабов у топеров.")
         while True:
             buy_top_users_slaves()
-    elif buy_slaves_mode == 3:
+    elif buy_slaves_mode == 2:
         print("Включена перекупка у IDшников из config.json.")
         while True:
             buy_from_ids()
