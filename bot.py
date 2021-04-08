@@ -50,6 +50,15 @@ def get_top_users():
     ).json()
 
 
+def get_set_fetter(id):
+    """Надевает на раба оковы."""
+    return scraper.post(
+        "https://slave.su/api/slaves/setFetters",
+        headers=headers,
+        json={"slave_id": id},
+    ).json()
+
+
 def get_bonuses():
     while True:
         try:
@@ -88,9 +97,19 @@ def buy_top_users_slaves():
 Купил id{slave_id} за {slave_info['price']} у id{top_user['vk_user_id']}
 Баланс: {"{:,}".format(profile['balance']['coins'])}
 Рабов: {"{:,}".format(profile['slaves_count'])}
-Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n""",
+Доход в минуту: {profile['slaves_profit_per_min']}\n""",
                                     )
-                                    sleep(uniform(min_delay, max_delay))
+                                    if conf_set_fetters == 1:
+                                        fetter = get_set_fetter(slave_id)
+                                        if "error" not in fetter.keys():
+                                            print(f"Надел оковы id{slave_id}")
+                                sleep(uniform(min_delay, max_delay))
+                        else:
+                            sleep(uniform(min_delay, max_delay))
+                else:
+                    sleep(uniform(min_delay, max_delay))
+        else:
+            sleep(uniform(min_delay, max_delay))
     except Exception as e:
         print(e.args)
         sleep(uniform(min_delay, max_delay))
@@ -121,9 +140,18 @@ def buy_from_ids():
 Купил id{slave_id} за {slave_info['price']} у id{id}
 Баланс: {"{:,}".format(profile['balance']['coins'])}
 Рабов: {"{:,}".format(profile['slaves_count'])}
-Доход в минуту: {"{:,}".format(profile['slaves_profit_per_min'])}\n""",
+Доход в минуту: {profile['slaves_profit_per_min']}\n""",
                                 )
-                                sleep(uniform(min_delay, max_delay))
+                                if conf_set_fetters == 1:
+                                    fetter = get_set_fetter(slave_id)
+                                    if "error" not in fetter.keys():
+                                        print(f"Надел оковы id{slave_id}")
+
+                            sleep(uniform(min_delay, max_delay))
+                    else:
+                        sleep(uniform(min_delay, max_delay))
+            else:
+                sleep(uniform(min_delay, max_delay))
     except Exception as e:
         print(e.args)
         sleep(uniform(min_delay, max_delay))
@@ -134,7 +162,7 @@ if __name__ == "__main__":
         """ВРабстве 3.0
 vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 20210406""",
+Версия 20210408""",
     )
 
     # Конфиг
@@ -146,6 +174,7 @@ github.com/monosans/vk-slaves3-bot
             sys.exit()
     auth = str((config["authorization"]).strip())
     buy_slaves_mode = int(config["buy_slaves_mode"])
+    conf_set_fetters = int(config["set_fetters"])
     min_delay = int(config["min_delay"])
     max_delay = int(config["max_delay"])
     min_price = int(config["min_price"])
