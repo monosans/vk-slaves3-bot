@@ -11,7 +11,7 @@
 - Устанавливаем [Python](https://www.python.org/downloads/windows) (Для Windows 7 нужен [Python 3.8](https://python.org/ftp/python/3.8.8/python-3.8.8.exe)). Во время установки обязательно ставим галочку `Add Python to PATH (Добавить Python в PATH)`
 - [Скачиваем архив с ботом](https://github.com/monosans/vk-slaves3-bot/archive/refs/heads/main.zip).
 - Распаковываем архив.
-- Редактируем файл `config.json` через любой текстовый редактор:
+- Редактируем файл `config.py` через любой текстовый редактор:
   - authorization:
     - Открываем [игру](https://vk.com/app7790408)
     - Нажимаем `F12` (Для Chromium браузеров)
@@ -23,10 +23,10 @@
     - Появится еще одна панель, выбираем в ней вкладку `Headers`
     - Ищем поле `authorization`
     - Копируем его значение (начинается c **Bearer**, **Bearer** копировать тоже нужно)
-    - Вставляем скопированный текст в значение `authorization` в `config.json` между кавычками
-  - buy_slaves_mode - режим покупки рабов (0 - выкл, получать только бонус; 1 - покупать рабов у игроков из топа; 2 - покупать рабов у людей из списка `"buy_from_ids"`)
+    - Вставляем скопированный текст в значение `authorization` в `config.py` между кавычками
+  - buy_slaves_mode - режим покупки рабов (0 - выкл, получать только бонус; 1 - покупать рабов у игроков из топа; 2 - покупать рабов у людей из списка `buy_from_ids`)
   - set_fetters - надевать ли на рабов оковы (0 - выкл, 1 - вкл)
-  - buy_from_ids - ID людей через запятую, у которых вы хотите скупать рабов при `"buy_slaves_mode": 2`. ID можно получить через [сайт](https://regvk.com/id).
+  - buy_from_ids - ID людей через запятую, у которых вы хотите скупать рабов при `buy_slaves_mode = 2`. ID можно получить через [сайт](https://regvk.com/id).
   - min_price - минимальная цена для покупки раба. Значения выше 20 приведут к более долгому поиску рабов.
   - max_price - максимальная цена для покупки раба.
   - min_delay - минимальная задержка между одинаковыми операциями в секундах. Значения ниже 3.34 скорее всего приведут к блокировке.
@@ -47,7 +47,7 @@
   - cd
   - pkg install -y git python
   - git clone https://github.com/monosans/vk-slaves3-bot
-- Редактируем файл `config.json` командой `nano vk-slaves3-bot/config.json`. Для удобного редактирования можно скачать [приложение Hacker's Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard), в нём в горизонтальном положении есть стрелочки для управления курсором.
+- Редактируем файл `config.py` командой `nano vk-slaves3-bot/config.py`. Для удобного редактирования можно скачать [приложение Hacker's Keyboard](https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard), в нём в горизонтальном положении есть стрелочки для управления курсором.
 - Чтобы получить `authorization` с телефона, используем [приложение F12](https://play.google.com/store/apps/details?id=com.asfmapps.f12):
   - authorization:
     - Открываем приложение F12, заходим на [сайт мобильного ВКонтакте](https://m.vk.com) и авторизуемся.
@@ -59,7 +59,7 @@
     - Немного листаем вверх и находим запись `https://slave.su/api/user/me`, нажимаем по ней.
     - Появится ещё одна панель. Под записью Request Headers находим поле `authorization`.
     - Копируем его значение (начинается c **Bearer**, **Bearer** копировать тоже нужно, заканчивается при переходе на строку **User-Agent**).
-    - Вставляем скопированный текст в значение `authorization` в `config.json` между кавычками.
+    - Вставляем скопированный текст в значение `authorization` в `config.py` между кавычками.
 - После редактирования файла, для сохранения нажмите Ctrl-O, Enter, Ctrl-X.
 
 Запуск: `sh vk-slaves3-bot/launch.sh`

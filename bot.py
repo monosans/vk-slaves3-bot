@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import sys
-from json import load
 from random import uniform
 from time import sleep, strftime
 
 import cloudscraper
+
+from config import (
+    authorization,
+    buy_from_ids,
+    buy_slaves_mode,
+    max_delay,
+    max_price,
+    min_delay,
+    min_price,
+    set_fetters,
+)
 
 
 def get_bonus():
@@ -64,10 +73,10 @@ def get_bonuses():
         try:
             get_bonus()
             print("Бонус получен.")
-            sleep(60 + uniform(0, 5))
+            sleep(60 + uniform(0, 3.34))
         except Exception as e:
             print(e.args)
-            sleep(uniform(0, 5))
+            sleep(3.34)
 
 
 def buy_top_users_slaves():
@@ -79,82 +88,79 @@ def buy_top_users_slaves():
                 top_user_slaves = get_slave_list(top_user["vk_user_id"])
                 if "list" in top_user_slaves.keys():
                     for slave in top_user_slaves["list"]:
-                        slave_id = slave["vk_user_id"]
-                        slave_info = get_user(slave_id)
-                        if "price" in slave_info.keys():
+                        if slave["fetter_to"] == 0:
                             if (
-                                slave_info["price"] <= max_price
-                                and slave_info["price"] >= min_price
+                                slave["price"] <= max_price
+                                and slave["price"] >= min_price
                             ):
                                 get_bonus()
-                                # Покупка раба
-                                buy_slave_info = get_buy_slave(slave_id)
-
+                                buy_slave_info = get_buy_slave(
+                                    slave["vk_user_id"],
+                                )
                                 if "user" in buy_slave_info.keys():
                                     profile = buy_slave_info["user"]
                                     print(
-                                        f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
-Купил id{slave_id} за {slave_info['price']} у id{top_user['vk_user_id']}
-Баланс: {"{:,}".format(profile['balance']['coins'])}
-Рабов: {"{:,}".format(profile['slaves_count'])}
+                                        f"""\n==[{strftime('%d.%m.%Y %H:%M:%S')}]==
+Купил id{slave['vk_user_id']} за {slave['price']} у id{top_user['vk_user_id']}
+Баланс: {'{:,}'.format(profile['balance']['coins'])}
+Рабов: {profile['slaves_count']}
 Доход в минуту: {profile['slaves_profit_per_min']}\n""",
                                     )
-                                    if conf_set_fetters == 1:
-                                        fetter = get_set_fetter(slave_id)
+                                    if set_fetters == 1:
+                                        fetter = get_set_fetter(
+                                            slave["vk_user_id"],
+                                        )
                                         if "error" not in fetter.keys():
-                                            print(f"Надел оковы id{slave_id}")
+                                            print(
+                                                f"Надел оковы id{slave['vk_user_id']}",
+                                            )
                                 sleep(uniform(min_delay, max_delay))
-                        else:
-                            sleep(uniform(min_delay, max_delay))
                 else:
-                    sleep(uniform(min_delay, max_delay))
+                    sleep(3.34)
         else:
-            sleep(uniform(min_delay, max_delay))
+            sleep(3.34)
     except Exception as e:
         print(e.args)
-        sleep(uniform(min_delay, max_delay))
+        sleep(3.34)
 
 
 def buy_from_ids():
-    """То же самое, что и buy_slaves, только перекупает рабов из списка в config.json."""
+    """То же самое, что и buy_slaves, только перекупает рабов из списка в config.py."""
     try:
         for id in buy_from_ids_list:
             slaves = get_slave_list(id)
             if "list" in slaves.keys():
                 for slave in slaves["list"]:
-                    slave_id = slave["vk_user_id"]
-                    slave_info = get_user(slave_id)
-                    if "price" in slave_info.keys():
+                    if slave["fetter_to"] == 0:
                         if (
-                            slave_info["price"] <= max_price
-                            and slave_info["price"] >= min_price
+                            slave["price"] <= max_price
+                            and slave["price"] >= min_price
                         ):
                             get_bonus()
-                            # Покупка раба
-                            buy_slave_info = get_buy_slave(slave_id)
-
+                            buy_slave_info = get_buy_slave(slave["vk_user_id"])
                             if "user" in buy_slave_info.keys():
                                 profile = buy_slave_info["user"]
                                 print(
-                                    f"""\n==[{strftime("%d.%m.%Y %H:%M:%S")}]==
-Купил id{slave_id} за {slave_info['price']} у id{id}
-Баланс: {"{:,}".format(profile['balance']['coins'])}
-Рабов: {"{:,}".format(profile['slaves_count'])}
+                                    f"""\n==[{strftime('%d.%m.%Y %H:%M:%S')}]==
+Купил id{slave['vk_user_id']} за {slave['price']} у id{id}
+Баланс: {'{:,}'.format(profile['balance']['coins'])}
+Рабов: {profile['slaves_count']}
 Доход в минуту: {profile['slaves_profit_per_min']}\n""",
                                 )
-                                if conf_set_fetters == 1:
-                                    fetter = get_set_fetter(slave_id)
+                                if set_fetters == 1:
+                                    fetter = get_set_fetter(
+                                        slave["vk_user_id"],
+                                    )
                                     if "error" not in fetter.keys():
-                                        print(f"Надел оковы id{slave_id}")
-
+                                        print(
+                                            f"Надел оковы id{slave['vk_user_id']}",
+                                        )
                             sleep(uniform(min_delay, max_delay))
-                    else:
-                        sleep(uniform(min_delay, max_delay))
             else:
-                sleep(uniform(min_delay, max_delay))
+                sleep(3.34)
     except Exception as e:
         print(e.args)
-        sleep(uniform(min_delay, max_delay))
+        sleep(3.34)
 
 
 if __name__ == "__main__":
@@ -162,39 +168,21 @@ if __name__ == "__main__":
         """ВРабстве 3.0
 vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 20210408""",
+Версия 20210409""",
     )
-
-    # Конфиг
-    with open("config.json") as f:
-        try:
-            config = load(f)
-        except:
-            print("Конфиг настроен некорректно.")
-            sys.exit()
-    auth = str((config["authorization"]).strip())
-    buy_slaves_mode = int(config["buy_slaves_mode"])
-    conf_set_fetters = int(config["set_fetters"])
-    min_delay = int(config["min_delay"])
-    max_delay = int(config["max_delay"])
-    min_price = int(config["min_price"])
-    max_price = int(config["max_price"])
-    buy_from_ids_list = list(config["buy_from_ids"])
     headers = {
         "Content-Type": "application/json",
-        "authorization": auth,
+        "authorization": authorization,
         "origin": "https://stage-app7790408-d3d98043d3c2.pages.vk-apps.com",
         "referer": "https://stage-app7790408-d3d98043d3c2.pages.vk-apps.com/",
     }
     scraper = cloudscraper.create_scraper()
-
-    # Запуск
     if buy_slaves_mode == 1:
         print("Включена перекупка рабов у топеров.")
         while True:
             buy_top_users_slaves()
     elif buy_slaves_mode == 2:
-        print("Включена перекупка у IDшников из config.json.")
+        print("Включена перекупка у IDшников из config.py.")
         while True:
             buy_from_ids()
     elif buy_slaves_mode == 0:
