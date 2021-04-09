@@ -1,4 +1,5 @@
 authorization = ""
+my_id = 607137534
 buy_slaves_mode = 1
 set_fetters = 1
 buy_from_ids = [536118730, 81525872, 497338835]
