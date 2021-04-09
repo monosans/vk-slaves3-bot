@@ -124,10 +124,10 @@ def buy_top_users_slaves():
         sleep(3.34)
 
 
-def buy_from_ids():
+def buy_slaves_from_ids():
     """То же самое, что и buy_slaves, только перекупает рабов из списка в config.py."""
     try:
-        for id in buy_from_ids_list:
+        for id in buy_from_ids:
             slaves = get_slave_list(id)
             if "list" in slaves.keys():
                 for slave in slaves["list"]:
@@ -168,7 +168,7 @@ if __name__ == "__main__":
         """ВРабстве 3.0
 vk.com/free_slaves_bot
 github.com/monosans/vk-slaves3-bot
-Версия 20210409""",
+Версия 20210410""",
     )
     headers = {
         "Content-Type": "application/json",
@@ -184,7 +184,7 @@ github.com/monosans/vk-slaves3-bot
     elif buy_slaves_mode == 2:
         print("Включена перекупка у IDшников из config.py.")
         while True:
-            buy_from_ids()
+            buy_slaves_from_ids()
     elif buy_slaves_mode == 0:
         print("Включено получение бонуса.")
         get_bonuses()
