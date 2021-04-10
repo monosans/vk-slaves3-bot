@@ -171,12 +171,12 @@ def buy_slaves_from_ids():
                                 if was_in_app == True:
                                     profile = buy_slave_info["user"]
                                     print(
-                                    f"""[{strftime('%H:%M:%S')}]
-Купил id{slave['vk_user_id']} за {slave['price']} у id{top_user['vk_user_id']}
-Баланс: {'{:,}'.format(profile['balance']['coins'])}
-Рабов: {profile['slaves_count']}
-Доход в минуту: {profile['slaves_profit_per_min']}""",
-                                )
+                                        f"""[{strftime('%H:%M:%S')}]
+    Купил id{slave['vk_user_id']} за {slave['price']} у id{id}
+    Баланс: {'{:,}'.format(profile['balance']['coins'])}
+    Рабов: {profile['slaves_count']}
+    Доход в минуту: {profile['slaves_profit_per_min']}""",
+                                    )
                                     if set_fetters == 1:
                                         fetter = get_set_fetter(
                                             slave["vk_user_id"],
@@ -248,6 +248,7 @@ github.com/monosans/vk-slaves3-bot
         Thread(target=sell_stupid_slaves).start()
     if check_offline == 1:
         print("Включена проверка рабов")
+
     else:
         print("Проверка рабов отключена!")
     if buy_slaves_mode == 1:
