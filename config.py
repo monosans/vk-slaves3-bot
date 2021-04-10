@@ -1,9 +1,11 @@
-authorization = ""
-my_id = 607137534
+authorization = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2a191c2VyX2lkIjoxOTk3NzY3NDgsImV4cCI6MTYyMzMxODg4MCwiaWF0IjoxNjE3Nzg5MjgwfQ.cvu5WThS-5YwAh6GiB3SuEyJth-CStRaiLD4Zc_BbGM"
+my_id = 199776748
 buy_slaves_mode = 1
 set_fetters = 1
-buy_from_ids = [536118730, 81525872, 497338835]
+buy_from_ids = [411634368]
 min_price = 20
-max_price = 313
+max_price = 500
 min_delay = 3.34
 max_delay = 3.5
+sell_low_slaves = 1
+check_offline = 0
