@@ -1,9 +1,11 @@
 authorization = ""
-my_id = 607137534
+my_id = Ur ID
 buy_slaves_mode = 1
 set_fetters = 1
-buy_from_ids = [536118730, 81525872, 497338835]
+buy_from_ids = [411634368,12334234]
 min_price = 20
-max_price = 313
+max_price = 500
 min_delay = 3.34
 max_delay = 3.5
+sell_low_slaves = 1
+check_offline = 0

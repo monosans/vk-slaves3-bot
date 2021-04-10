@@ -16,6 +16,8 @@ from config import (
     min_price,
     my_id,
     set_fetters,
+    sell_low_slaves,
+    check_offline,
 )
 
 
@@ -42,6 +44,13 @@ def get_user(id):
     return get(
         f"https://slave.su/api/slaves/user/{id}",
         headers=headers,
+    ).json()
+def sell_slave(id):
+    """Возвращает информацию о пользователе."""
+    post(
+        "https://slave.su/api/slaves/buySlave",
+        headers=headers,
+        json={"slave_id": id},
     ).json()
 
 
@@ -79,6 +88,14 @@ def get_bonuses():
         except Exception as e:
             print(e.args)
             sleep(3.34)
+def sell_stupid_slaves():
+    slaves = get_slave_list(my_id)
+    if "list" in slaves.keys():
+        for slave in slaves["list"]:
+            if slave["was_in_app"] == False:
+                sell_slave(slave["vk_user_id"])
+                print("id"+str(slave["vk_user_id"])+" не заходил в игру, поэтому продан")
+                sleep(3.34)
 
 
 def buy_top_users_slaves():
@@ -91,36 +108,43 @@ def buy_top_users_slaves():
                 if "list" in top_user_slaves.keys():
                     for slave in top_user_slaves["list"]:
                         if slave["fetter_to"] == 0:
-                            if (
-                                slave["price"] <= max_price
-                                and slave["price"] >= min_price
-                            ):
-                                get_bonus()
-                                buy_slave_info = get_buy_slave(
-                                    slave["vk_user_id"],
-                                )
-                                if "user" in buy_slave_info.keys():
-                                    profile = buy_slave_info["user"]
-                                    print(
-                                        f"""[{strftime('%H:%M:%S')}]
-Купил id{slave['vk_user_id']} за {slave['price']} у id{top_user['vk_user_id']}
-Баланс: {'{:,}'.format(profile['balance']['coins'])}
-Рабов: {profile['slaves_count']}
-Доход в минуту: {profile['slaves_profit_per_min']}""",
+                                if (
+                                    slave["price"] <= max_price
+                                    and slave["price"] >= min_price
+                                ):
+                                    get_bonus()
+                                    buy_slave_info = get_buy_slave(
+                                        slave["vk_user_id"],
                                     )
-                                    if set_fetters == 1:
-                                        fetter = get_set_fetter(
-                                            slave["vk_user_id"],
-                                        )
-                                        if "error" not in fetter.keys():
+                                    if "user" in buy_slave_info.keys():
+                                        was_in_app = slave["was_in_app"]
+                                        if check_offline == 0:
+                                            was_in_app = True
+                                        if was_in_app == True:
+                                            profile = buy_slave_info["user"]
                                             print(
-                                                f"Надел оковы id{slave['vk_user_id']}",
-                                            )
-                                sleep(uniform(min_delay, max_delay))
-                else:
-                    sleep(3.34)
-        else:
-            sleep(3.34)
+                                            f"""[{strftime('%H:%M:%S')}]
+    Купил id{slave['vk_user_id']} за {slave['price']} у id{top_user['vk_user_id']}
+    Баланс: {'{:,}'.format(profile['balance']['coins'])}
+    Рабов: {profile['slaves_count']}
+    Доход в минуту: {profile['slaves_profit_per_min']}""",
+                                        )
+                                            if set_fetters == 1:
+                                                fetter = get_set_fetter(
+                                                    slave["vk_user_id"],
+                                                )
+                                                if "error" not in fetter.keys():
+                                                    print(
+                                                        f"Надел оковы id{slave['vk_user_id']}",
+                                                    )
+                                        else:
+                                            print("Заходил в игру:"+str(slave["was_in_app"]))
+                                        sleep(uniform(min_delay, max_delay))
+                                            
+                    else:
+                        sleep(3.34)
+            else:
+                sleep(3.34)
     except Exception as e:
         print(e.args)
         sleep(3.34)
@@ -141,23 +165,29 @@ def buy_slaves_from_ids():
                             get_bonus()
                             buy_slave_info = get_buy_slave(slave["vk_user_id"])
                             if "user" in buy_slave_info.keys():
-                                profile = buy_slave_info["user"]
-                                print(
+                                was_in_app = slave["was_in_app"]
+                                if check_offline == 0:
+                                    was_in_app = True
+                                if was_in_app == True:
+                                    profile = buy_slave_info["user"]
+                                    print(
                                     f"""[{strftime('%H:%M:%S')}]
-Купил id{slave['vk_user_id']} за {slave['price']} у id{id}
+Купил id{slave['vk_user_id']} за {slave['price']} у id{top_user['vk_user_id']}
 Баланс: {'{:,}'.format(profile['balance']['coins'])}
 Рабов: {profile['slaves_count']}
 Доход в минуту: {profile['slaves_profit_per_min']}""",
                                 )
-                                if set_fetters == 1:
-                                    fetter = get_set_fetter(
-                                        slave["vk_user_id"],
-                                    )
-                                    if "error" not in fetter.keys():
-                                        print(
-                                            f"Надел оковы id{slave['vk_user_id']}",
+                                    if set_fetters == 1:
+                                        fetter = get_set_fetter(
+                                            slave["vk_user_id"],
                                         )
-                            sleep(uniform(min_delay, max_delay))
+                                        if "error" not in fetter.keys():
+                                            print(
+                                                f"Надел оковы id{slave['vk_user_id']}",
+                                            )
+                                else:
+                                    print("Заходил в игру:"+str(slave["was_in_app"]))
+                                sleep(uniform(min_delay, max_delay))
             else:
                 sleep(3.34)
     except Exception as e:
@@ -204,6 +234,22 @@ github.com/monosans/vk-slaves3-bot
         "referer": "https://stage-app7790408-d3d98043d3c2.pages.vk-apps.com/",
         "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.51 Safari/537.36",
     }
+    if sell_low_slaves == 1:
+        print("Включена продажа слабых рабов")
+        print("""
+
+
+
+        ВНИМАНИЕ! Чтоб выйти из бота в этом режиме, нужно нажать CTRL+C Два раза!
+
+
+            """)
+        sleep(3)
+        Thread(target=sell_stupid_slaves).start()
+    if check_offline == 1:
+        print("Включена проверка рабов")
+    else:
+        print("Проверка рабов отключена!")
     if buy_slaves_mode == 1:
         print("Включена перекупка у топеров")
         while True:
